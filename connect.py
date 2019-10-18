@@ -3,6 +3,8 @@ import logging
 import requests
 import json
 
+__version__ = '0.1.2'
+
 _LOGGER = logging.getLogger(__name__)
 
 class Adax:
