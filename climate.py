@@ -48,7 +48,7 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
      z_target =  round(float(zone["targetTemperature"]) / 100, 2)
      z_window = bool(zone["openWindow"])
      z_maxtemp = round(float(zone["upperTemperatureLimit"]) / 100, 2)
-     z_ mintemp = round(float(zone["lowerTemperatureLimit"]) / 100, 2)
+     z_mintemp = round(float(zone["lowerTemperatureLimit"]) / 100, 2)
 
      add_entities([AdaxDevice(z_id, z_name, z_state, z_target, z_window, z_maxtemp, z_mintemp)])
 
