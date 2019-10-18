@@ -32,8 +32,6 @@ You also need to extract the following values, from any call (fixed values in al
 	- heat_signature (signature from heat URL)
 	- signature for every temperature between MIN_TEMP and MAX_TEMP and 0 (0 is used for turning heaters off)
 - climate.py (optional)
-	- MIN_TEMP (lower temperature level to use in the integration)
-	- MAX_TEMP (upper temperature level to use in the integration)
 	- DEFAULT_TEMP (temperature to use when turning heaters on)
 6. Put the folder adax_wifi/ in $CONFIG/custom_components/
 7. Add parameters in your configuration.yaml
