@@ -15,8 +15,6 @@ import homeassistant.helpers.config_validation as cv
 from homeassistant.components.sensor import (PLATFORM_SCHEMA)
 from homeassistant.const import (TEMP_CELSIUS)
 
-__version__ = '0.1.1'
-
 _LOGGER = logging.getLogger(__name__)
 
 
