@@ -1,0 +1,8 @@
+{
+  "domain": "adax_wifi",
+  "name": "Adax Wifi module",
+  "documentation": "https://github.com/kayjei/adax_wifi",
+  "dependencies": [],
+  "codeowners": ["kayjei"],
+  "requirements": ["requests"]
+}
