@@ -18,8 +18,6 @@ from homeassistant.const import (
     TEMP_CELSIUS, ATTR_TEMPERATURE, PRECISION_WHOLE)
 import homeassistant.helpers.config_validation as cv
 
-__version__ = '0.1.2'
-
 _LOGGER = logging.getLogger(__name__)
 
 DEFAULT_TEMP = 20
