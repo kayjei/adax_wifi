@@ -22,8 +22,6 @@ __version__ = '0.1.0'
 
 _LOGGER = logging.getLogger(__name__)
 
-MIN_TEMP = 12
-MAX_TEMP = 25
 DEFAULT_TEMP = 20
 
 SUPPORT_FLAGS = SUPPORT_TARGET_TEMPERATURE
@@ -51,8 +49,10 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
      z_state = round(float(zone["currentTemperature"] + zone["temperatureCalibration"]) / 100, 2)
      z_target =  round(float(zone["targetTemperature"]) / 100, 2)
      z_window = bool(zone["openWindow"])
+     z_maxtemp = round(float(zone["upperTemperatureLimit"]) / 100, 2)
+     z_ mintemp = round(float(zone["lowerTemperatureLimit"]) / 100, 2)
 
-     add_entities([AdaxDevice(z_id, z_name, z_state, z_target, z_window)])
+     add_entities([AdaxDevice(z_id, z_name, z_state, z_target, z_window, z_maxtemp, z_mintemp)])
 
      _LOGGER.debug("adax: Zone " + str(z_id) + " added with name " + str(z_name) + "! Current temp is " + str(z_state))
 
@@ -60,7 +60,7 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
 class AdaxDevice(ClimateDevice):
     """Representation of a heater."""
 
-    def __init__(self, id, name, state, target, window):
+    def __init__(self, id, name, state, target, window, maxtemp, mintemp):
         """Initialize the heater."""
         self._entity_id = "climate.adax_" + str(id)
         self._current_temperature = state
@@ -69,6 +69,8 @@ class AdaxDevice(ClimateDevice):
         self._state = state
         self._target_temperature = int(target)
         self._open_window = window
+        self._max_temp = maxtemp
+        self._min_temp = mintemp
         self.update()
         
 
@@ -133,12 +135,12 @@ class AdaxDevice(ClimateDevice):
     @property
     def min_temp(self):
         """Return the minimum temperature."""
-        return MIN_TEMP
+        return self._min_temp
 
     @property
     def max_temp(self):
         """Return the maximum temperature."""
-        return MAX_TEMP
+        return self._max_temp
 
     @property
     def current_temperature(self):
@@ -197,6 +199,8 @@ class AdaxDevice(ClimateDevice):
          self._state = round(float(zone["currentTemperature"] + zone["temperatureCalibration"]) / 100, 2)
          self._target_temperature =  round(float(zone["targetTemperature"]) / 100, 2)
          self._open_window = bool(zone["openWindow"])
+         self._max_temp = round(float(zone["upperTemperatureLimit"]) / 100, 2)
+         self._min_temp = round(float(zone["lowerTemperatureLimit"]) / 100, 2)
 
          _LOGGER.debug("Updating adax: Current temp is " + str(self._state))
 
