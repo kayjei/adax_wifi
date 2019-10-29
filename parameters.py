@@ -1,14 +1,19 @@
 """Parameter file for Adax integration"""
 
-def set_param(api_call):
-    switcher= {
+def get_static(value):
+    switcher = {
     "account_id": '',
     "appVersion": '',
     "device": '',
     "os": '',
     "timeOffset": '',
     "timeZone": '',
-    "zone_signature": '',
+    "zone_signature": ''
+    }
+    return switcher.get(value,"Key missing")
+
+def get_signature_123456(value):
+    switcher = {
     "heat_signature": '',
     0: '', #Set as HVAC_OFF
     5: '',
@@ -43,4 +48,13 @@ def set_param(api_call):
     34: '',
     35: ''
     }
-    return switcher.get(api_call,"Key missing")
+    return switcher.get(value,"Key missing")
+
+
+def set_param(zone, value):
+    """Section for static values"""
+    if zone == "static":
+        return get_static(value)
+
+    elif zone == 168388:
+        return get_signature_123456(value)
