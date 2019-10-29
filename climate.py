@@ -24,7 +24,7 @@ DEFAULT_TEMP = 20
 
 SUPPORT_FLAGS = SUPPORT_TARGET_TEMPERATURE
 
-ZONE_URL = 'https://heater.azurewebsites.net/sheater-client-api/rest/zones/list/' + set_param("account_id")
+ZONE_URL = 'https://heater.azurewebsites.net/sheater-client-api/rest/zones/list/' + str(set_param("static", "account_id"))
 TEMP_URL = 'https://heater.azurewebsites.net/sheater-client-api/rest/zones/'
 
 # ---------------------------------------------------------------
@@ -35,8 +35,8 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
 
     _LOGGER.debug("Adding component: adax_climate ...")
     
-    params = {"signature": set_param("zone_signature"), "appVersion": set_param("appVersion"), "device": set_param("device"), 
-            "os": set_param("os"), "timeOffset": set_param("timeOffset"), "timeZone": set_param("timeZone")}
+    params = {"signature": set_param("static", "zone_signature"), "appVersion": set_param("static", "appVersion"), "device": set_param("static", "device"), 
+            "os": set_param("static", "os"), "timeOffset": set_param("static", "timeOffset"), "timeZone": set_param("static", "timeZone")}
 
     devices_json = Adax.do_api_request(ZONE_URL, params)
 
@@ -113,11 +113,11 @@ class AdaxDevice(ClimateDevice):
             temperature = int(DEFAULT_TEMP)
             target_temp = int(temperature * 100)
 
-        SET_URL = TEMP_URL + str(self._id) + "/target_temperature/" + str(set_param("account_id")) + "/" + str(target_temp)
+        SET_URL = TEMP_URL + str(self._id) + "/target_temperature/" + str(set_param("static", "account_id")) + "/" + str(target_temp)
         _LOGGER.debug("API URL: " + SET_URL)
 
-        params = {"signature": set_param(temperature), "appVersion": set_param("appVersion"), "device": set_param("device"), 
-                "os": set_param("os"), "timeOffset": set_param("timeOffset"), "timeZone": set_param("timeZone")}
+        params = {"signature": set_param(self._id, temperature), "appVersion": set_param("static", "appVersion"), "device": set_param("static", "device"), 
+                "os": set_param("static", "os"), "timeOffset": set_param("static", "timeOffset"), "timeZone": set_param("static", "timeZone")}
         _LOGGER.debug("API params: " + str(params))
 
         response_json = Adax.do_api_request(SET_URL, params)
@@ -166,11 +166,11 @@ class AdaxDevice(ClimateDevice):
         """Set new target temperature, via API commands."""
         target_temp = int(temperature * 100)
 
-        SET_URL = TEMP_URL + str(self._id) + "/target_temperature/" + str(set_param("account_id")) + "/" + str(target_temp)
+        SET_URL = TEMP_URL + str(self._id) + "/target_temperature/" + str(set_param("static", "account_id")) + "/" + str(target_temp)
         _LOGGER.debug("API URL: " + SET_URL)
 
-        params = {"signature": set_param(temperature), "appVersion": set_param("appVersion"), "device": set_param("device"), 
-                "os": set_param("os"), "timeOffset": set_param("timeOffset"), "timeZone": set_param("timeZone")}
+        params = {"signature": set_param(self._id, temperature), "appVersion": set_param("static", "appVersion"), "device": set_param("static", "device"), 
+                "os": set_param("static", "os"), "timeOffset": set_param("static", "timeOffset"), "timeZone": set_param("static", "timeZone")}
         _LOGGER.debug("API params: " + str(params))
 
         response_json = Adax.do_api_request(SET_URL, params)
@@ -187,8 +187,8 @@ class AdaxDevice(ClimateDevice):
 
     def _get_data(self):
         """Get the data of the device."""
-        params = {"signature": set_param("zone_signature"), "appVersion": set_param("appVersion"), "device": set_param("device"), 
-            "os": set_param("os"), "timeOffset": set_param("timeOffset"), "timeZone": set_param("timeZone")}
+        params = {"signature": set_param("static", "zone_signature"), "appVersion": set_param("static", "appVersion"), "device": set_param("static", "device"), 
+            "os": set_param("static", "os"), "timeOffset": set_param("static", "timeOffset"), "timeZone": set_param("static", "timeZone")}
     
         devices_json = Adax.do_api_request(ZONE_URL, params)
     
