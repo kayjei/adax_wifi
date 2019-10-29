@@ -193,17 +193,17 @@ class AdaxDevice(ClimateDevice):
         devices_json = Adax.do_api_request(ZONE_URL, params)
     
         for zone in devices_json[1]:
-         self._name = str(zone["name"])
-         self._state = round(float(zone["currentTemperature"] + zone["temperatureCalibration"]) / 100, 2)
-         self._target_temperature =  round(float(zone["targetTemperature"]) / 100, 2)
-         self._open_window = bool(zone["openWindow"])
-         self._max_temp = round(float(zone["upperTemperatureLimit"]) / 100, 2)
-         self._min_temp = round(float(zone["lowerTemperatureLimit"]) / 100, 2)
+            if zone["id"] == self._id:
+                self._name = str(zone["name"])
+                self._state = round(float(zone["currentTemperature"] + zone["temperatureCalibration"]) / 100, 2)
+                self._target_temperature =  round(float(zone["targetTemperature"]) / 100, 2)
+                self._open_window = bool(zone["openWindow"])
+                self._max_temp = round(float(zone["upperTemperatureLimit"]) / 100, 2)
+                self._min_temp = round(float(zone["lowerTemperatureLimit"]) / 100, 2)
 
-         _LOGGER.debug("Updating adax: Current temp is " + str(self._state))
+                _LOGGER.debug("Updating adax zone " + str(self._name) + ": Current temp is " + str(self._state))
 
     def update(self):
         """Get the latest data."""
         self._get_data()
 #        return True        
-    
