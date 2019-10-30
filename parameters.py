@@ -56,5 +56,5 @@ def set_param(zone, value):
     if zone == "static":
         return get_static(value)
 
-    elif zone == 168388:
+    elif zone == 123456:
         return get_signature_123456(value)
