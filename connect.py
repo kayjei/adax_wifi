@@ -3,7 +3,7 @@ import logging
 import requests
 import json
 
-__version__ = '0.2.0'
+__version__ = '0.2.1'
 
 _LOGGER = logging.getLogger(__name__)
 
