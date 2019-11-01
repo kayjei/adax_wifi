@@ -51,10 +51,6 @@ def get_signature_123456(value):
     }
     return switcher.get(value,"Key missing")
 
-def get_params(type, value):
-
-
-
 def set_param(zone, value):
     """Section for iOS devices"""
     if 'iOS' in get_static("os"):
