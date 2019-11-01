@@ -46,10 +46,18 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
      z_name = str(zone["name"])
      z_state = round(float(zone["currentTemperature"] + zone["temperatureCalibration"]) / 100, 2)
      z_target =  round(float(zone["targetTemperature"]) / 100, 2)
-     z_window = bool(zone["openWindow"])
-     z_maxtemp = round(float(zone["upperTemperatureLimit"]) / 100, 2)
-     z_mintemp = round(float(zone["lowerTemperatureLimit"]) / 100, 2)
-
+     if zone["openWindow"]:
+        z_window = bool(zone["openWindow"])
+     else:
+        z_window = False
+     if zone["upperTemperatureLimit"]:
+        z_maxtemp = round(float(zone["upperTemperatureLimit"]) / 100, 2)
+     else:
+        z_maxtemp = 30
+     if zone["lowerTemperatureLimit"]:
+        z_mintemp = round(float(zone["lowerTemperatureLimit"]) / 100, 2)
+     else:
+        z_mintemp = 12
      add_entities([AdaxDevice(z_id, z_name, z_state, z_target, z_window, z_maxtemp, z_mintemp)])
 
      _LOGGER.debug("adax: Zone " + str(z_id) + " added with name " + str(z_name) + "! Current temp is " + str(z_state))
