@@ -44,12 +44,12 @@ You also need to extract the following values, from any call (fixed values in al
 	- Update your zone id in the if-clause under function ```set_param()``` (ie ```elif zone == 123456:``` should be  ```elif zone == 884597:```. Also update the function (line below) to match your lookup function (ie ```get_signature_123456```should be ```get_signature_884597```)
 7. Put the folder adax_wifi/ in $CONFIG/custom_components/
 8. Add parameters in your configuration.yaml
+ ```
  sensor:
-   ```
    - platform: adax_wifi
    ```
+```
  climate:
-   ```
    - platform: adax_wifi
    ```
 9. Add debug logging
