@@ -201,9 +201,18 @@ class AdaxDevice(ClimateDevice):
                 self._name = str(zone["name"])
                 self._state = round(float(zone["currentTemperature"] + zone["temperatureCalibration"]) / 100, 2)
                 self._target_temperature =  round(float(zone["targetTemperature"]) / 100, 2)
-                self._open_window = bool(zone["openWindow"])
-                self._max_temp = round(float(zone["upperTemperatureLimit"]) / 100, 2)
-                self._min_temp = round(float(zone["lowerTemperatureLimit"]) / 100, 2)
+                if zone["openWindow"]:
+                    self._open_window = bool(zone["openWindow"])
+                else:
+                    self._open_window = False
+                if zone["upperTemperatureLimit"]:
+                    self._max_temp = round(float(zone["upperTemperatureLimit"]) / 100, 2)
+                else:
+                    self._max_temp = 30
+                if zone["lowerTemperatureLimit"]:
+                    self._min_temp = round(float(zone["lowerTemperatureLimit"]) / 100, 2)
+                else:
+                    self._min_temp = 12
 
                 _LOGGER.debug("Updating adax zone " + str(self._name) + ": Current temp is " + str(self._state))
 
