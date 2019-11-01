@@ -49,7 +49,9 @@ You also need to extract the following values, from any call (fixed values in al
  climate:
    ```- platform: adax_wifi```
 9. Add debug logging
- ```logger:```
-   ```logs:```
-     ```custom_components.adax_wifi: debug```
+ ```
+ logger:
+   logs:
+     custom_components.adax_wifi: debug
+```
 10. Restart Home Assistant
