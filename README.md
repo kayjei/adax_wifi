@@ -32,11 +32,11 @@ You also need to extract the following values, from any call (fixed values in al
 	- ```locale``` (not used when parameters are fetched from iOS devices)
 	- ```zone_signature``` (signature from zone URL)
 	- ```heat_signature``` (signature from heat URL)
-	- ```signature``` for every temperature between ```MIN_TEMP``` and ```MAX_TEMP and 0 (0 is used for turning heaters off)
+	- ```signature``` for every temperature between ```MIN_TEMP``` and ```MAX_TEMP``` and 0 (0 is used for turning heaters off)
 	- Zone ID. Your zone must replace 123456 in function ```get_signature_123456``` (ie ```get_signature_243569```).
 	- You also need to update your zone id in the if-clause under function ```set_param()``` (ie ```elif zone == 123456:``` should be  ```elif zone == 243569:```. Also update the function (line below) to match your lookup function (ie ```get_signature_123456```should be ```get_signature_243569```)
 - climate.py (optional)
-	- DEFAULT_TEMP (temperature to use when turning heaters on)
+	- ```DEFAULT_TEMP``` (temperature to use when turning heaters on)
 6. (Optional) To add multiple zones:
 	- Copy the entire function ```get_signature_123456```and update with your second zone (ie ```get_signature_884597```)
 	- Add you ```signature``` values for the second zone
