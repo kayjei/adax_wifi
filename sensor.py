@@ -8,7 +8,7 @@ import json
 import requests
 import voluptuous as vol
 from .connect import Adax
-from .parameters import set_param
+from .parameters import set_param, get_static
 
 from homeassistant.helpers.entity import Entity
 import homeassistant.helpers.config_validation as cv
@@ -19,16 +19,16 @@ _LOGGER = logging.getLogger(__name__)
 
 
 
-ZONE_URL = 'https://heater.azurewebsites.net/sheater-client-api/rest/zones/list/' + str(set_param("static", "account_id"))
+ZONE_URL = 'https://heater.azurewebsites.net/sheater-client-api/rest/zones/list/' + str(get_static("account_id"))
 
 
 
 def setup_platform(hass, config, add_devices, discovery_info=None):
     _LOGGER.debug("Adding sensor component: adax wifi ...")
     """Set up the sensor platform"""
-    
-    params = {"signature": set_param("static", "zone_signature"), "appVersion": set_param("static", "appVersion"), "device": set_param("static", "device"), 
-        "os": set_param("static", "os"), "timeOffset": set_param("static", "timeOffset"), "timeZone": set_param("static", "timeZone")}
+
+    params = set_param("static", "zone_signature")
+    _LOGGER.debug("URL: " + str(ZONE_URL) + ", PARAMS: " + str(params))
 
     zones_json = Adax.do_api_request(ZONE_URL, params)
 
@@ -36,9 +36,8 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
         zone_id = int(zone["id"])
         zone_name = str(zone["name"])
 
-        HEAT_URL = 'https://heater.azurewebsites.net/sheater-client-api/rest/zones/' + str(zone_id) + '/heaters/' + str(set_param("static", "account_id"))
-        params = {"signature": set_param(zone_id, "heat_signature"), "appVersion": set_param("static", "appVersion"), "device": set_param("static", "device"), 
-                "os": set_param("static", "os"), "timeOffset": set_param("static", "timeOffset"), "timeZone": set_param("static", "timeZone")}
+        HEAT_URL = 'https://heater.azurewebsites.net/sheater-client-api/rest/zones/' + str(zone_id) + '/heaters/' + str(get_static("account_id"))
+        params = set_param(zone_id, "heat_signature")
 
         data = Adax.do_api_request(HEAT_URL, params)
         device_list = []
@@ -62,8 +61,7 @@ class AdaxDevice(Entity):
 
     def update(self):
         """Heaters"""
-        params = {"signature": set_param("static", "zone_signature"), "appVersion": set_param("static", "appVersion"), "device": set_param("static", "device"), 
-                "os": set_param("static", "os"), "timeOffset": set_param("static", "timeOffset"), "timeZone": set_param("static", "timeZone")}
+        params = set_param("static", "zone_signature")
 
         zones_json = Adax.do_api_request(ZONE_URL, params)
 
@@ -72,9 +70,8 @@ class AdaxDevice(Entity):
             zone_name = str(zone["name"])
             child_lock = bool(zone["heatersLocked"])
 
-            HEAT_URL = 'https://heater.azurewebsites.net/sheater-client-api/rest/zones/' + str(zone_id) + '/heaters/' + str(set_param("static", "account_id"))
-            params = {"signature": set_param(zone_id, "heat_signature"), "appVersion": set_param("static", "appVersion"), "device": set_param("static", "device"), 
-                    "os": set_param("static", "os"), "timeOffset": set_param("static", "timeOffset"), "timeZone": set_param("static", "timeZone")}
+            HEAT_URL = 'https://heater.azurewebsites.net/sheater-client-api/rest/zones/' + str(zone_id) + '/heaters/' + str(get_static("account_id"))
+            params = set_param(zone_id, "heat_signature")
 
             data = Adax.do_api_request(HEAT_URL, params)
             device_list = []
