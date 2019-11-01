@@ -20,6 +20,7 @@ You also need to extract the following values, from any call (fixed values in al
 - os
 - timeOffset
 - timeZone
+- locale (not used when parameters are fetched from iOS devices)
 5. Update the parameter section in the files 
 - parameters.py
 	- account_id
@@ -28,9 +29,12 @@ You also need to extract the following values, from any call (fixed values in al
 	- os
 	- timeOffset
 	- timeZone
+	- locale (not used when parameters are fetched from iOS devices)
 	- zone_signature (signature from zone URL)
 	- heat_signature (signature from heat URL)
 	- signature for every temperature between MIN_TEMP and MAX_TEMP and 0 (0 is used for turning heaters off)
+	- Zone ID. Your zone must replace 123456 in function get_signature_123456 (ie get_signature_243569).
+	- You also need to update your zone id in the if-clause under function set_param() (ie """elif zone == 123456:""" should be  """elif zone == 243569:"""
 - climate.py (optional)
 	- DEFAULT_TEMP (temperature to use when turning heaters on)
 6. Put the folder adax_wifi/ in $CONFIG/custom_components/
