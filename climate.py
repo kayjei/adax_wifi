@@ -10,7 +10,7 @@ import requests
 import json
 import voluptuous as vol
 from .connect import Adax
-from .parameters import set_param
+from .parameters import set_param, get_static
 
 from homeassistant.components.climate import ClimateDevice, PLATFORM_SCHEMA
 from homeassistant.components.climate.const import SUPPORT_TARGET_TEMPERATURE, HVAC_MODE_OFF, HVAC_MODE_HEAT
@@ -24,7 +24,7 @@ DEFAULT_TEMP = 20
 
 SUPPORT_FLAGS = SUPPORT_TARGET_TEMPERATURE
 
-ZONE_URL = 'https://heater.azurewebsites.net/sheater-client-api/rest/zones/list/' + str(set_param("static", "account_id"))
+ZONE_URL = 'https://heater.azurewebsites.net/sheater-client-api/rest/zones/list/' + str(get_static("account_id"))
 TEMP_URL = 'https://heater.azurewebsites.net/sheater-client-api/rest/zones/'
 
 # ---------------------------------------------------------------
@@ -34,9 +34,9 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
     """Set up the Adax thermostat."""
 
     _LOGGER.debug("Adding component: adax_climate ...")
-    
-    params = {"signature": set_param("static", "zone_signature"), "appVersion": set_param("static", "appVersion"), "device": set_param("static", "device"), 
-            "os": set_param("static", "os"), "timeOffset": set_param("static", "timeOffset"), "timeZone": set_param("static", "timeZone")}
+
+    params = set_param("static", "zone_signature")
+    _LOGGER.debug("URL: " + str(ZONE_URL) + ", PARAMS: " + str(params))
 
     devices_json = Adax.do_api_request(ZONE_URL, params)
 
@@ -70,7 +70,6 @@ class AdaxDevice(ClimateDevice):
         self._max_temp = maxtemp
         self._min_temp = mintemp
         self.update()
-        
 
     @property
     def supported_features(self):
@@ -113,11 +112,10 @@ class AdaxDevice(ClimateDevice):
             temperature = int(DEFAULT_TEMP)
             target_temp = int(temperature * 100)
 
-        SET_URL = TEMP_URL + str(self._id) + "/target_temperature/" + str(set_param("static", "account_id")) + "/" + str(target_temp)
+        SET_URL = TEMP_URL + str(self._id) + "/target_temperature/" + str(get_static("account_id")) + "/" + str(target_temp)
         _LOGGER.debug("API URL: " + SET_URL)
 
-        params = {"signature": set_param(self._id, temperature), "appVersion": set_param("static", "appVersion"), "device": set_param("static", "device"), 
-                "os": set_param("static", "os"), "timeOffset": set_param("static", "timeOffset"), "timeZone": set_param("static", "timeZone")}
+        params = set_param(self._id, temperature)
         _LOGGER.debug("API params: " + str(params))
 
         response_json = Adax.do_api_request(SET_URL, params)
@@ -166,11 +164,10 @@ class AdaxDevice(ClimateDevice):
         """Set new target temperature, via API commands."""
         target_temp = int(temperature * 100)
 
-        SET_URL = TEMP_URL + str(self._id) + "/target_temperature/" + str(set_param("static", "account_id")) + "/" + str(target_temp)
+        SET_URL = TEMP_URL + str(self._id) + "/target_temperature/" + str(get_static("account_id")) + "/" + str(target_temp)
         _LOGGER.debug("API URL: " + SET_URL)
 
-        params = {"signature": set_param(self._id, temperature), "appVersion": set_param("static", "appVersion"), "device": set_param("static", "device"), 
-                "os": set_param("static", "os"), "timeOffset": set_param("static", "timeOffset"), "timeZone": set_param("static", "timeZone")}
+        params = set_param(self._id, temperature)
         _LOGGER.debug("API params: " + str(params))
 
         response_json = Adax.do_api_request(SET_URL, params)
@@ -187,11 +184,10 @@ class AdaxDevice(ClimateDevice):
 
     def _get_data(self):
         """Get the data of the device."""
-        params = {"signature": set_param("static", "zone_signature"), "appVersion": set_param("static", "appVersion"), "device": set_param("static", "device"), 
-            "os": set_param("static", "os"), "timeOffset": set_param("static", "timeOffset"), "timeZone": set_param("static", "timeZone")}
-    
+        params = set_param("static", "zone_signature")
+
         devices_json = Adax.do_api_request(ZONE_URL, params)
-    
+
         for zone in devices_json[1]:
             if zone["id"] == self._id:
                 self._name = str(zone["name"])
@@ -206,4 +202,4 @@ class AdaxDevice(ClimateDevice):
     def update(self):
         """Get the latest data."""
         self._get_data()
-#        return True        
+#        return True
