@@ -8,6 +8,7 @@ def get_static(value):
     "os": '',
     "timeOffset": '',
     "timeZone": '',
+    "locale": '',
     "zone_signature": ''
     }
     return switcher.get(value,"Key missing")
@@ -50,11 +51,27 @@ def get_signature_123456(value):
     }
     return switcher.get(value,"Key missing")
 
+def get_params(type, value):
+
+
 
 def set_param(zone, value):
-    """Section for static values"""
-    if zone == "static":
-        return get_static(value)
+    """Section for iOS devices"""
+    if 'iOS' in get_static("os"):
+        if zone == "static":
+            return {"signature": get_static(value), "appVersion": get_static("appVersion"), "device": get_static("device"), 
+            "os": get_static("os"), "timeOffset": get_static("timeOffset"), "timeZone": get_static("timeZone")}
 
-    elif zone == 123456:
-        return get_signature_123456(value)
+        elif zone == 123456:
+            return {"signature": get_signature_123456(value), "appVersion": get_static("appVersion"), "device": get_static("device"), 
+            "os": get_static("os"), "timeOffset": get_static("timeOffset"), "timeZone": get_static("timeZone")}
+
+
+    else:
+        if zone == "static":
+            return {"signature": get_static(value), "appVersion": get_static("appVersion"), "device": get_static("device"), 
+            "os": get_static("os"), "timeOffset": get_static("timeOffset"), "timeZone": get_static("timeZone"), "locale": get_static("locale")}
+
+        elif zone == 123456:
+            return {"signature": get_signature_123456(value), "appVersion": get_static("appVersion"), "device": get_static("device"), 
+            "os": get_static("os"), "timeOffset": get_static("timeOffset"), "timeZone": get_static("timeZone"), "locale": get_static("locale")}
