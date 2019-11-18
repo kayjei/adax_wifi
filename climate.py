@@ -39,7 +39,7 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
             "os": set_param("os"), "timeOffset": set_param("timeOffset"), "timeZone": set_param("timeZone")}
 
     devices_json = Adax.do_api_request(ZONE_URL, params)
-    _LOGGER.debug("Response: " + str(devices_json.text))
+    _LOGGER.debug("Response: " + str(devices_json))
 
     for zone in devices_json[1]:
      z_id = int(zone["id"])
