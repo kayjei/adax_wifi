@@ -7,6 +7,7 @@ Guide:
 3. On your phone, open your Adax wifi app. Make sure you can see traffic in the mitmproxy gui
 4. To be able to use the integration, you must extract from the API calls:
 - ```account_id```: Passed in the URL in every call, i.e. zone list https://heater.azurewebsites.net/sheater-client-api/rest/zones/list/{account_id} Can also be found in your Adax app, under Account
+- ```zone_signature```: Signature passed as parameter with URL: https://heater.azurewebsites.net/sheater-client-api/rest/zones/list/{account_id}
 - ```heat_signature```: Signature passed as parameter with URL: https://heater.azurewebsites.net/sheater-client-api/rest/zones/{zone_id}/heaters/{account_id}
 - temperatures (Signature (passed as parameter) for every temperature used between ```MIN_TEMP``` and ```MAX_TEMP``` set in the parameters). To extract, simple set the temperature to the different values in your app. The last URL parameter represents the temperature:
   - ```0```: 302XXXXXXX (found in api-call https://heater.azurewebsites.net/sheater-client-api/rest/zones/{zone_id}/target_temperature/{account_id}/0)
