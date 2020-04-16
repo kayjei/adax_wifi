@@ -14,12 +14,12 @@ class Adax:
     def do_api_request(url, params):
         """Do API request."""
         req = requests.post(url, data=params)
-        _LOGGER.debug("API request returned %d", req.text)
+        _LOGGER.debug("API request returned %s", req.text)
 
         if req.status_code != requests.codes.ok:
-            _LOGGER.exception("API request returned error %d", req.status_code)
+            _LOGGER.exception("API request returned error %s", req.status_code)
         else:
-            _LOGGER.debug("API request returned OK %d", req.text)
+            _LOGGER.debug("API request returned OK %s", req.text)
 
         json_data = json.loads(req.content)
         return json_data
