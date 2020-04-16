@@ -83,7 +83,7 @@ class AdaxDevice(Entity):
                     self._target = round(float(heater["targetTemperature"]) / 100, 2)
                     self._locked = child_lock
                     self._zone_name = zone_name
-                    _LOGGER.debug("Temp is %d for %d", self._state, self._name)
+                    _LOGGER.debug("Temp is %s for %s", self._state, self._name)
 
     @property
     def entity_id(self):
